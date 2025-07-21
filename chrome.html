@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chrome Bar Trier - Cocktails & Atmosphere</title>
+    <meta name="description" content="Chrome Bar Trier - стильный бар с атмосферными коктейлями и уютной обстановкой на Deutschherrenstraße в Трире">
+    <meta name="keywords" content="Chrome Bar, Trier, Cocktails, Bar, Deutschherrenstraße, Drinks, Whiskey">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍸</text></svg>">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #1a1a1a;
+            --secondary-color: #333333;
+            --accent-color: #FF8C00;
+            --gold-accent: #FFD700;
+            --text-dark: #1a1a1a;
+            --text-light: #ffffff;
+            --bg-light: #f5f5f5;
+            --bg-dark: #1a1a1a;
+            --chrome-blue: #4169e1;
+            --warm-amber: #FF8C00;
+            --dark-orange: #CC5500;
+            --light-orange: #FFA500;
+        }
+
+        body {
+            font-family: 'Arial', 'Helvetica', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: linear-gradient(135deg, #1a1a1a 0%, #333333 25%, #FF8C00 50%, #333333 75%, #1a1a1a 100%);
+            background-attachment: fixed;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header & Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            border-bottom: 2px solid var(--accent-color);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            text-decoration: none;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            background: linear-gradient(45deg, #FF8C00, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 20px rgba(255, 140, 0, 0.5);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color);
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+        }
+
+        .mobile-menu {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .mobile-menu span {
+            width: 25px;
+            height: 3px;
+            background: var(--text-light);
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: 
+                linear-gradient(rgba(26, 26, 26, 0.4), rgba(26, 26, 26, 0.6)),
+                url('images/intro.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><radialGradient id="glow" cx="50%" cy="50%"><stop offset="0%" stop-color="%23FFD700" stop-opacity="0.2"/><stop offset="100%" stop-color="transparent"/></radialGradient></defs><rect fill="url(%23glow)" width="1200" height="800"/></svg>');
+            pointer-events: none;
+        }
+
+        .hero-content {
+            color: var(--text-light);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease 0.5s forwards;
+            z-index: 2;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.8);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            background: linear-gradient(45deg, #FF8C00, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            font-style: italic;
+            color: var(--accent-color);
+            text-shadow: 0 0 15px rgba(255, 140, 0, 0.8);
+        }
+
+        .hero-address {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+        }
+
+        .hero-hours {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.8;
+            font-weight: bold;
+            color: var(--gold-accent);
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 35px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: var(--accent-color);
+            color: var(--text-dark);
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: var(--light-orange);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 140, 0, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-light);
+            border: 2px solid var(--text-light);
+        }
+
+        .btn-secondary:hover {
+            background: var(--text-light);
+            color: var(--text-dark);
+        }
+
+        /* Sections */
+        section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 3rem;
+            color: var(--primary-color);
+            position: relative;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-color), var(--gold-accent));
+            margin: 1rem auto;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        /* Photo Gallery Section */
+        .photo-gallery {
+            background: var(--bg-dark);
+            color: var(--text-light);
+        }
+
+        .photo-gallery .section-title {
+            color: var(--text-light);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            height: 300px;
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            font-size: 3rem;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+        }
+
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .about-text h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 2rem;
+        }
+
+        .about-image {
+            width: 100%;
+            height: 400px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            border: 3px solid var(--accent-color);
+        }
+
+        /* Menu Section */
+        .menu-section {
+            background: var(--bg-dark);
+            color: var(--text-light);
+        }
+
+        .menu-section .section-title {
+            color: var(--text-light);
+        }
+
+        /* Menu Categories */
+        .menu-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .menu-category {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+            border: 1px solid rgba(0, 191, 255, 0.2);
+        }
+
+        .menu-category:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+        }
+
+        .menu-category h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .menu-icon {
+            font-size: 2rem;
+            filter: drop-shadow(0 0 10px rgba(0, 191, 255, 0.5));
+        }
+
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px dotted rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .menu-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .menu-item:hover {
+            background: rgba(0, 191, 255, 0.1);
+            padding: 0.5rem;
+            border-radius: 8px;
+            border-bottom: 1px dotted rgba(255, 255, 255, 0.3);
+        }
+
+        .menu-item:hover:last-child {
+            border-bottom: none;
+        }
+
+        .menu-item-info {
+            flex: 1;
+        }
+
+        .menu-item-info h4 {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .menu-item-info p {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-style: italic;
+            line-height: 1.4;
+        }
+
+        .menu-item-price {
+            font-weight: bold;
+            color: var(--gold-accent);
+            font-size: 1.2rem;
+            margin-left: 1rem;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        /* Contact Section */
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        .contact-info {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        .contact-item {
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .contact-item h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        .contact-item a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .contact-item a:hover {
+            color: var(--chrome-blue);
+        }
+
+        .map-container {
+            width: 100%;
+            height: 400px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            border: 3px solid var(--accent-color);
+        }
+
+        .map-container iframe {
+            filter: grayscale(20%) contrast(120%) brightness(110%);
+            transition: filter 0.3s ease;
+        }
+
+        .map-container:hover iframe {
+            filter: grayscale(0%) contrast(100%) brightness(100%);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-links a {
+            width: 50px;
+            height: 50px;
+            background: var(--accent-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-links a:hover {
+            background: var(--chrome-blue);
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 8px 25px rgba(0, 191, 255, 0.4);
+        }
+
+        .social-links a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .social-links a:hover::before {
+            left: 100%;
+        }
+
+        .social-icon {
+            font-size: 1.2rem;
+            z-index: 2;
+            position: relative;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-dark);
+            color: var(--text-light);
+            text-align: center;
+            padding: 3rem 0;
+            border-top: 2px solid var(--accent-color);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--bg-dark);
+                flex-direction: column;
+                padding: 1rem 0;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu {
+                display: flex;
+            }
+
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.3rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .about-content,
+            .contact-content {
+                grid-template-columns: 1fr;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="container">
+            <a href="#" class="logo">Chrome!</a>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#gallery">Galerie</a></li>
+                <li><a href="#about">Über uns</a></li>
+                <li><a href="#menu">Speisekarte</a></li>
+                <li><a href="#contact">Kontakt</a></li>
+            </ul>
+            <div class="mobile-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Chrome!</h1>
+            <p class="hero-subtitle">Cocktails & Atmosphere</p>
+            <p class="hero-address">Deutschherrenstraße 1, 54290 Trier</p>
+            <p class="hero-hours">Täglich ab 18:00</p>
+            <div class="cta-buttons">
+                <a href="#menu" class="btn btn-primary">Speisekarte</a>
+                <a href="https://www.instagram.com/chrome.trier/" target="_blank" class="btn btn-secondary">Instagram</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Photo Gallery Section -->
+    <section id="gallery" class="photo-gallery">
+        <div class="container">
+            <h2 class="section-title fade-in">Unsere Atmosphäre</h2>
+            <div class="gallery-grid fade-in">
+                <div class="gallery-item">
+                    <img src="images/beer-glass.jpg" alt="Löwenbräu Bier" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                
+                <div class="gallery-item">
+                    <img src="images/whiskey-bottles.jpg" alt="Premium Spirituosen" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                
+                <div class="gallery-item">
+                    <img src="images/chrome-bar-exterior.jpg" alt="Chrome Bar Außenansicht" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                
+                <div class="gallery-item">
+                    <img src="images/cocktail-setup.jpg" alt="Cocktail Setup" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="container">
+            <h2 class="section-title fade-in">Über Chrome Bar</h2>
+            <div class="about-content fade-in">
+                <div class="about-text">
+                    <h3>Willkommen in der Chrome Bar!</h3>
+                    <p>Chrome Bar ist Ihr stilvoller Treffpunkt im Herzen von Trier. Mit unserer sorgfältig kuratierten Auswahl an Premium-Spirituosen, handwerklich zubereiteten Cocktails und einer entspannten Atmosphäre bieten wir Ihnen das perfekte Ambiente für einen gelungenen Abend.</p>
+                    
+                    <p>Unsere Bar besticht durch modernes Design, warme Beleuchtung und eine gemütliche Einrichtung. Ob Sie sich für einen edlen Whisky, einen klassischen Cocktail oder ein kühles Bier entscheiden – bei uns finden Sie Qualität und Geschmack in jedem Glas.</p>
+                    
+                    <p>Besuchen Sie uns täglich ab 18:00 Uhr und erleben Sie, warum Chrome Bar zu den beliebtesten Adressen in Trier gehört.</p>
+                </div>
+                <div class="about-image">
+                    <img src="images/intro.jpg" alt="Chrome! Bar Atmosphere" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="menu-section">
+        <div class="container">
+            <h2 class="section-title fade-in">Unsere Speisekarte</h2>
+            <div class="menu-categories fade-in">
+                <div class="menu-category">
+                    <h3><span class="menu-icon">🍸</span> Cocktails</h3>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <h4>Old Fashioned</h4>
+                            <p>Bourbon, Zucker, Angostura Bitters, Orange</p>
+                        </div>
+                        <div class="menu-item-price">12,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <h4>Negroni</h4>
+                            <p>Gin, Campari, Roter Wermut</p>
+                        </div>
+                        <div class="menu-item-price">11,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <h4>Moscow Mule</h4>
+                            <p>Vodka, Ginger Beer, Limette</p>
+                        </div>
+                        <div class="menu-item-price">10,50€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <h4>Whiskey Sour</h4>
+                            <p>Bourbon, Zitronensaft, Zuckersirup, Eiweiß</p>
+                        </div>
+                        <div class="menu-item-price">11,50€</div>
+                    </div>
+                </div>
+
+                <div class="menu-category">
+                    <h3><span class="menu-icon">🥃</span> Premium Spirituosen</h3>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <h4>Aberlour 12 Jahre</h4>
+                            <p>Single Malt Scotch Whisky (4cl)</p>
+                        </div>
+                        <div class="menu-item-price">14,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <h4>Talisker 10 Jahre</h4>
+                            <p>Isle of Skye Single Malt (4cl)</p>
+                        </div>
+                        <div class="menu-item-price">15,50€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <h4>Hennessy V.S.</h4>
+                            <p>Cognac (4cl)</p>
+                        </div>
+                        <div class="menu-item-price">16,00€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <h4>Grey Goose</h4>
+                            <p>Premium Vodka (4cl)</p>
+                        </div>
+                        <div class="menu-item-price">12,00€</div>
+                    </div>
+                </div>
+
+                <div class="menu-category">
+                    <h3><span class="menu-icon">🍺</span> Biere & Getränke</h3>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <h4>Löwenbräu (0,5l)</h4>
+                            <p>Frisches deutsches Bier vom Fass</p>
+                        </div>
+                        <div class="menu-item-price">4,50€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <h4>Bitburger Pils (0,33l)</h4>
+                            <p>Premium Pilsener</p>
+                        </div>
+                        <div class="menu-item-price">3,80€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <h4>Corona Extra (0,33l)</h4>
+                            <p>Mit Limette</p>
+                        </div>
+                        <div class="menu-item-price">4,20€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <h4>Wein (0,2l)</h4>
+                            <p>Rotwein oder Weißwein</p>
+                        </div>
+                        <div class="menu-item-price">6,50€</div>
+                    </div>
+                </div>
+
+                <div class="menu-category">
+                    <h3><span class="menu-icon">🍽️</span> Snacks</h3>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <h4>Oliven Mix</h4>
+                            <p>Marinierte Oliven mit Kräutern</p>
+                        </div>
+                        <div class="menu-item-price">5,50€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <h4>Nuss Mix</h4>
+                            <p>Geröstete Nüsse, gesalzen</p>
+                        </div>
+                        <div class="menu-item-price">4,50€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <h4>Käse Platte</h4>
+                            <p>Auswahl regionaler Käsesorten</p>
+                        </div>
+                        <div class="menu-item-price">8,90€</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <h4>Bruschetta</h4>
+                            <p>Geröstetes Brot mit Tomaten und Basilikum</p>
+                        </div>
+                        <div class="menu-item-price">6,50€</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="container">
+            <h2 class="section-title fade-in">Kontakt & Anfahrt</h2>
+            <div class="contact-content fade-in">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div>
+                            <h4>📍 Adresse</h4>
+                            <p>Deutschherrenstraße 1<br>54290 Trier<br>Deutschland</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div>
+                            <h4>🕒 Öffnungszeiten</h4>
+                            <p>Täglich ab 18:00 Uhr</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div>
+                            <h4>📱 Social Media</h4>
+                            <p><a href="https://www.instagram.com/chrome.trier/" target="_blank">@chrome.trier</a></p>
+                        </div>
+                    </div>
+                    
+                    <div class="social-links">
+                        <a href="https://www.instagram.com/chrome.trier/" target="_blank" title="Instagram">
+                            <span class="social-icon">📷</span>
+                        </a>
+                        <a href="#" title="Facebook">
+                            <span class="social-icon">📘</span>
+                        </a>
+                        <a href="#" title="WhatsApp">
+                            <span class="social-icon">💬</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="map-container">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2518.9849937445623!2d6.6407!3d49.759!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47be945b4c82c93b%3A0x8b1c0b3c0b3c0b3c!2sDeutschherrenstra%C3%9Fe%201%2C%2054290%20Trier%2C%20Germany!5e0!3m2!1sen!2sde!4v1637000000000!5m2!1sen!2sde"
+                        width="100%" 
+                        height="400" 
+                        style="border:0; border-radius: 15px;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Chrome! Trier. Alle Rechte vorbehalten.</p>
+            <p>Deutschherrenstraße 1, 54290 Trier • Täglich ab 18:00</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const navLinks = document.querySelector('.nav-links');
+
+        mobileMenu.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    navLinks.classList.remove('active');
+                }
+            });
+        });
+
+        // Fade in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Header background change on scroll
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(26, 26, 26, 0.98)';
+            } else {
+                header.style.background = 'rgba(26, 26, 26, 0.95)';
+            }
+        });
+
+        // Gallery interaction
+        document.querySelectorAll('.gallery-item').forEach(item => {
+            item.addEventListener('click', () => {
+                alert('Здесь откроется полноразмерное изображение галереи');
+            });
+        });
+    </script>
+
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BarOrPub",
+        "name": "Chrome!",
+        "description": "Стильный бар с атмосферными коктейлями и уютной обстановкой в Трире",
+        "url": "https://www.chrome-bar-trier.de",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Deutschherrenstraße 1",
+            "addressLocality": "Trier",
+            "postalCode": "54290",
+            "addressCountry": "DE"
+        },
+        "openingHoursSpecification": {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+            "opens": "18:00"
+        },
+        "servesCuisine": "Cocktails",
+        "priceRange": "$$",
+        "sameAs": [
+            "https://www.instagram.com/chrome.trier/"
+        ]
+    }
+    </script>
+</body>
+</html>
